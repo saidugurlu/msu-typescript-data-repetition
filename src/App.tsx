@@ -15,7 +15,10 @@ function App() {
 		language: string;
 		yearMonth: string;
 		numberInStock: number;
+    hasError: boolean;
 	}
+
+  const userIsAdmin = true;
 
 	useEffect(() => {
 		(async () => {
@@ -26,9 +29,10 @@ function App() {
 					id: rawBook.id,
 					title: rawBook.title,
 					description: rawBook.description,
-					language: rawBook.language,
+					language: rawBook.language? rawBook.language : "english",
 					yearMonth: rawBook.yearMonth,
 					numberInStock: rawBook.numberInStock,
+          hasError: ["english", "french"].includes(rawBook.language) ? false : true
 				}
 				_books.push(book);
 			});
@@ -44,39 +48,42 @@ function App() {
 			<div className="bookArea">
 				{books.map((book, i) => {
 					return (
-						<fieldset className="book" key={i}>
-							<legend>ID: {book.id}</legend>
+            <>
+            {!book.hasError && (
+              <fieldset className="book" key={i}>
+                <legend>ID: {book.id}</legend>
 
-							<div className="row">
-								<label>Title</label>
-								<div>{book.title}</div>
-							</div>
+                <div className="row">
+                  <label>Title</label>
+                  <div>{book.title}</div>
+                </div>
 
-							<div className="row">
-								<label>Description</label>
-								<div>{book.description}</div>
-							</div>
+                <div className="row">
+                  <label>Description</label>
+                  <div>{book.description}</div>
+                </div>
 
-							<div className="row">
-								<label>Language</label>
-								<div>{book.language}</div>
-							</div>
+                <div className="row">
+                  <label>Language</label>
+                  <div>{book.language}</div>
+                </div>
 
-							<div className="row">
-								<label>Year/Month</label>
-								<div>{book.yearMonth}</div>
-							</div>
+                <div className="row">
+                  <label>Year/Month</label>
+                  <div>{book.yearMonth}</div>
+                </div>
 
-							<div className="row">
-								<label>In Stock</label>
-								<div>{book.numberInStock}</div>
-							</div>
-						</fieldset>
-					);
-				})}
-			</div>
-		</div>
-	);
+                <div className="row">
+                  <label>In Stock</label>
+                  <div>{book.numberInStock}</div>
+                </div>
+              </fieldset>
+            )}
+          </>
+        );
+      })}
+    </div>
+  </div>
+);
 }
-
 export default App;
